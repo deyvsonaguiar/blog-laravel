@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Auth;
 
 class ForgotPasswordController extends Controller
 {
@@ -27,6 +28,11 @@ class ForgotPasswordController extends Controller
      */
     public function __construct()
     {
+        if(Auth::check() && Auth::user()->role->id == 1) {
+            $this->redirectTo = route('admin.dashboard');
+        } else {
+            $this->redirectTo = route('author.dashboard');
+        }
         $this->middleware('guest');
     }
 }
