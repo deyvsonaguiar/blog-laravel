@@ -10,13 +10,20 @@
             <div class="btn-group user-helper-dropdown">
                 <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                 <ul class="dropdown-menu pull-right">
-                    <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                    <li><a href="javascript:void(0);"><i class="material-icons">person</i>Perfil</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>
-                    <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>
-                    <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="javascript:void(0);"><i class="material-icons">input</i>Sign Out</a></li>
+                    <li>
+                        <a class="javascript:void(0);" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            <i class="material-icons">input</i>{{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                        <!--<a href="javascript:void(0);"><i class="material-icons">input</i>Desconectar</a> -->
+                    </li>
                 </ul>
             </div>
         </div>
@@ -25,13 +32,22 @@
     <!-- Menu -->
     <div class="menu">
         <ul class="list">
+            @if(Request::is('admin*'))
             <li class="header">MENU</li>
-            <li class="active">
+            <li class="{{ Request::is('admin/dashboard') ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}">
                     <i class="material-icons">home</i>
                     <span>Home</span>
                 </a>
             </li>
+
+            <li class="{{ Request::is('admin/tag*') ? 'active' : '' }}">
+                <a href="{{ route('admin.tag.index') }}">
+                    <i class="material-icons">label</i>
+                    <span>Tag</span>
+                </a>
+            </li>
+            @endif
         </ul>
     </div>
     <!-- #Menu -->
@@ -45,7 +61,6 @@
         </div>
     </div>
     <!-- #Footer -->
-</aside>
 <!-- #END# Left Sidebar -->
 <!-- Right Sidebar -->
 <aside id="rightsidebar" class="right-sidebar">

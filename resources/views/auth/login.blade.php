@@ -8,11 +8,6 @@
 
     <link href="{{ asset('assets/frontend/css/auth/responsive.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('assets/frontend/css/auth/bootstrap.css') }}" rel="stylesheet">
-
-    <link href="{{ asset('assets/frontend/css/auth/ionicons.css') }}" rel="stylesheet">
-
-
 @endpush
 
 @section('content')
@@ -95,16 +90,6 @@
     </section><!-- section -->
 
 @push('js')
-
-    <!-- SCIPTS -->
-
-    <script src="{{ asset('assets/frontend/js/auth/jquery-3.1.1.min.js') }}"></script>
-
-    <script src="{{ asset('assets/frontend/js/auth/tether.min.js') }}"></script>
-
-    <script src="{{ asset('assets/frontend/js/auth/bootstrap.js') }}"></script>
-
-    <script src="{{ asset('assets/frontend/js/auth/scripts.js') }}"></script>
 
 @endpush
 
