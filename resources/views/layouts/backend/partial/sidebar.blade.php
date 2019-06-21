@@ -47,6 +47,14 @@
                     <span>Tag</span>
                 </a>
             </li>
+
+            <li class="{{ Request::is('admin/category*') ? 'active' : '' }}">
+                <a href="{{ route('admin.category.index') }}">
+                    <i class="material-icons">apps</i>
+                    <span>Categorias</span>
+                </a>
+            </li>
+
             @endif
         </ul>
     </div>

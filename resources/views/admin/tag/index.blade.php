@@ -22,21 +22,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>
-                                EXPORTABLE TABLE
-                            </h2>
-                            <ul class="header-dropdown m-r--5">
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons">more_vert</i>
-                                    </a>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li><a href="javascript:void(0);">Action</a></li>
-                                        <li><a href="javascript:void(0);">Another action</a></li>
-                                        <li><a href="javascript:void(0);">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <h2></h2>
                         </div>
                         <div class="body">
                             <div class="table-responsive">
@@ -47,6 +33,7 @@
                                             <th>Nome</th>
                                             <th>Criado em</th>
                                             <th>Atualizado em</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -65,6 +52,20 @@
                                                 <td>{{ $tag->name }}</td>
                                                 <td>{{ $tag->created_at }}</td>
                                                 <td>{{ $tag->updated_at }}</td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('admin.tag.edit', $tag->id) }}"
+                                                    class="btn btn-info waves-effect">
+                                                    <i class="material-icons">edit</i>
+                                                    </a>
+
+                                                    <button class="btn btn-danger waves-effect" type="button" onclick="deleteTag({{ $tag->id }})">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                                <form id="delete-form-{{ $tag->id }}" action="{{ route('admin.tag.destroy', $tag->id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                                </form>
+                                                </td>
                                             </tr>
                                             @endforeach
                                     </tbody>
@@ -91,7 +92,45 @@
     <script src="{{ asset('assets/backend/plugins/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
     <script src="{{ asset('assets/backend/plugins/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/backend/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-
     <script src="{{ asset('assets/backend/js/pages/tables/jquery-datatable.js') }}"></script>
+    <script src="{{ asset('assets/backend/js/sweetalert2.js') }}"></script>
+    
+    <script type="text/javascript">
+       function deleteTag(id) {
+        
+            const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false,
+            })
+
+            swalWithBootstrapButtons.fire({
+            title: 'Você tem certeza?',
+            text: "Esta ação não poderá ser revertida!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Não, cancelar!',
+            reverseButtons: true
+            }).then((result) => {
+            if (result.value) {
+                event.preventDefault();
+                document.getElementById('delete-form-'+id).submit();
+            } else if (
+            // Read more about handling dismissals
+            result.dismiss === Swal.DismissReason.cancel
+            ) {
+            swalWithBootstrapButtons.fire(
+            'Cancelado',
+            'Seu dado ainda está salvo',
+            'erro'
+            )
+            }
+            })
+
+       } 
+    </script>
 
 @endpush
