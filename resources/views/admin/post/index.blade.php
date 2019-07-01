@@ -1,6 +1,6 @@
 @extends('layouts.backend.app')
 
-@section('title', 'Tag')
+@section('title', 'Posts')
 
 @push('css')
 
@@ -13,9 +13,9 @@
 <div class="container">
     <div class="container-fluid">
         <div class="block-header">
-            <a href="{{ route('admin.tag.create') }}" class="btn btn-primary waves-effect">
+            <a href="{{ route('admin.posts.create') }}" class="btn btn-primary waves-effect">
             <i class="material-icons">add</i>
-            <span>Nova Tag</span></a>
+            <span>Nova Postagem</span></a>
         </div>
 
         <div class="row clearfix">
@@ -23,8 +23,8 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                TAGS
-                                <span class="badge bg-blue">{{ $tags->count() }}</span>
+                                POSTAGENS
+                                <span class="badge bg-blue">{{ $posts->count() }}</span>
                             </h2>
                         </div>
                         <div class="body">
@@ -33,7 +33,11 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Nome</th>
+                                            <th>Título</th>
+                                            <th>Autor</th>
+                                            <th><i class="material-icons">visibility</i></th>
+                                            <th>Aprovação</th>
+                                            <th>Status</th>
                                             <th>Criado em</th>
                                             <th>Atualizado em</th>
                                             <th>Ações</th>
@@ -42,29 +46,49 @@
                                     <tfoot>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Nome</th>
+                                            <th>Título</th>
+                                            <th>Autor</th>
+                                            <th><i class="material-icons">visibility</i></th>
+                                            <th>Aprovação</th>
+                                            <th>Status</th>
                                             <th>Criado em</th>
                                             <th>Atualizado em</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
 
-                                            @foreach ($tags as $tag )
+                                            @foreach ($posts as $post )
                                             <tr>
-                                                <td>{{ $tag->id }}</td>
-                                                <td>{{ $tag->name }}</td>
-                                                <td>{{ $tag->created_at }}</td>
-                                                <td>{{ $tag->updated_at }}</td>
+                                                <td>{{ $post->id }}</td>
+                                                <td>{{ str_limit($post->title, '100') }}</td>
+                                                <td>{{ $post->user->name }}</td>
+                                                <td>{{ $post->view_count }}</td>
+                                                <td>
+                                                    @if($post->is_approved == true)
+                                                        <span class="badge bg-blue">Aprovado</span>
+                                                    @else
+                                                        <span class="badge bg-pink">Pendente</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($post->status == true)
+                                                        <span class="badge bg-blue">Publicado</span>
+                                                    @else
+                                                        <span class="badge bg-pink">Pendente</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $post->created_at }}</td>
+                                                <td>{{ $post->updated_at }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('admin.tag.edit', $tag->id) }}"
+                                                    <a href="{{ route('admin.posts.edit', $post->id) }}"
                                                     class="btn btn-info waves-effect">
                                                     <i class="material-icons">edit</i>
                                                     </a>
 
-                                                    <button class="btn btn-danger waves-effect" type="button" onclick="deleteTag({{ $tag->id }})">
+                                                    <button class="btn btn-danger waves-effect" type="button" onclick="deletePost({{ $post->id }})">
                                                     <i class="material-icons">delete</i>
                                                 </button>
-                                                <form id="delete-form-{{ $tag->id }}" action="{{ route('admin.tag.destroy', $tag->id) }}" method="POST" style="display: none;">
+                                                <form id="delete-form-{{ $post->id }}" action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                                 </form>
@@ -97,10 +121,10 @@
     <script src="{{ asset('assets/backend/plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
     <script src="{{ asset('assets/backend/js/pages/tables/jquery-datatable.js') }}"></script>
     <script src="{{ asset('assets/backend/js/sweetalert2.js') }}"></script>
-    
+
     <script type="text/javascript">
-       function deleteTag(id) {
-        
+       function deletePost(id) {
+
             const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
             confirmButton: 'btn btn-success',
@@ -133,7 +157,7 @@
             }
             })
 
-       } 
+       }
     </script>
 
 @endpush

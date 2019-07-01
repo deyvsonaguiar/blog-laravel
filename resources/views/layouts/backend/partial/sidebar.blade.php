@@ -55,6 +55,13 @@
                 </a>
             </li>
 
+            <li class="{{ Request::is('admin/posts*') ? 'active' : '' }}">
+                <a href="{{ route('admin.posts.index') }}">
+                    <i class="material-icons">library_books</i>
+                    <span>Posts</span>
+                </a>
+            </li>
+
             @endif
         </ul>
     </div>
